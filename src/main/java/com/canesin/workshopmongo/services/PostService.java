@@ -1,5 +1,6 @@
 package com.canesin.workshopmongo.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,13 +22,19 @@ public class PostService {
 	}
 
 	public Post findById(String id) {
-	
+
 		Optional<Post> obj = repository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Usuário não encontrado!"));
-		// orElseThrow > vai tentar dar o get, se nao tiver usuario estoura a exception	
+		// orElseThrow > vai tentar dar o get, se nao tiver usuario estoura a exception
 	}
-	
-	public List<Post> findByTitle(String text){
+
+	public List<Post> findByTitle(String text) {
 		return repository.searchTitle(text);
 	}
+
+	public List<Post> fullSearch(String text, Date minDate, Date maxDate) {
+		maxDate = new Date(maxDate.getTime() + 24 * 60 * 60 * 1000); // pega o valor do proximo dia a meia noite
+		return repository.fullSearch(text, minDate, maxDate);
+	}
+
 }

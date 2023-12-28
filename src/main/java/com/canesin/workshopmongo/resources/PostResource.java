@@ -1,5 +1,6 @@
 package com.canesin.workshopmongo.resources;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.canesin.workshopmongo.domain.Post;
-import com.canesin.workshopmongo.services.PostService;
 import com.canesin.workshopmongo.resources.util.URL;
+import com.canesin.workshopmongo.services.PostService;
 
 @RestController // indica que sera o controlador
 @RequestMapping(value = "/posts") // url para invocar
@@ -28,13 +29,28 @@ public class PostResource {
 
 		return ResponseEntity.ok().body(post);
 	}
-	
+
 	@GetMapping(value = "/titlesearch")
-	public ResponseEntity<List<Post>> findByTitle(@RequestParam(value="text", defaultValue="") String text) {
+	public ResponseEntity<List<Post>> findByTitle(@RequestParam(value = "text", defaultValue = "") String text) {
 
 		text = URL.decodeParam(text);
 		List<Post> post = service.findByTitle(text);
 
 		return ResponseEntity.ok().body(post);
 	}
+
+	@GetMapping(value = "/fullsearch")
+	public ResponseEntity<List<Post>> fullsearch(@RequestParam(value = "text", defaultValue = "") String text,
+			@RequestParam(value = "minDate", defaultValue = "") String minDate,
+			@RequestParam(value = "maxDate", defaultValue = "") String maxDate) {
+
+		text = URL.decodeParam(text);
+		Date min = URL.convertDate(minDate, new Date(0L));
+		Date max = URL.convertDate(maxDate, new Date());
+
+		List<Post> post = service.fullSearch(text, min, max);
+
+		return ResponseEntity.ok().body(post);
+	}
+
 }
