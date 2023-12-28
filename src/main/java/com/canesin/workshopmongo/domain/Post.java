@@ -1,13 +1,16 @@
 package com.canesin.workshopmongo.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.canesin.workshopmongo.dto.AuthorDTO;
+import com.canesin.workshopmongo.dto.CommentDTO;
 
 @Document // indicia que a class é um documento do mongoDB igual identificar ela com @entity para entidade do banco de dados
 public class Post implements Serializable {
@@ -19,6 +22,8 @@ public class Post implements Serializable {
 	private String title;
 	private String body;	
 	private AuthorDTO author;
+	
+	private List<CommentDTO> comments = new ArrayList<>();
 	
 	public Post() {
 		
@@ -74,6 +79,16 @@ public class Post implements Serializable {
 		this.body = body;
 	}
 
+
+	public List<CommentDTO> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<CommentDTO> comments) {
+		this.comments = comments;
+	}
+
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -90,7 +105,6 @@ public class Post implements Serializable {
 		Post other = (Post) obj;
 		return Objects.equals(id, other.id);
 	}
-
 	
 	
 }
