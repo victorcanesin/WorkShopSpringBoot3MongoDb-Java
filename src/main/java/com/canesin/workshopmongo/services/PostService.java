@@ -26,4 +26,8 @@ public class PostService {
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Usuário não encontrado!"));
 		// orElseThrow > vai tentar dar o get, se nao tiver usuario estoura a exception	
 	}
+	
+	public List<Post> findByTitle(String text){
+		return repository.findByTitleContainingIgnoreCase(text);
+	}
 }
